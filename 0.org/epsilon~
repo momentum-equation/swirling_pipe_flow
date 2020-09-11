@@ -1,0 +1,89 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  3.0.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      omega;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+epsilonInlet      0.002;
+
+dimensions      [0 2 -3 0 0 0 0];
+
+internalField   uniform $epsilonInlet;
+
+boundaryField
+{
+    cavityRight
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+    DIAPHRAGM
+    {
+        type            turbulentMixingLengthDissipationRateInlet;
+        mixingLength    0.1;
+        value           uniform $epsilonInlet;
+        
+       /* type            fixedValue;
+        value           uniform (0 1 0);*/
+    }
+    cavityTop
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+    orificeRight
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+    domainBottom
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+    domainRight
+    {
+        type            turbulentMixingLengthDissipationRateInlet;
+        mixingLength    0.1;
+        value           uniform $epsilonInlet;
+    }
+    domainTop
+    {
+        type            turbulentMixingLengthDissipationRateInlet;
+        mixingLength    0.1;
+        value           uniform $epsilonInlet;
+    }
+    /*axis
+    {
+        type            empty;
+    }*/
+    back
+    {
+        type            wedge;
+    }
+    front
+    {
+        type            wedge;
+    }
+
+    /*"(inlet|atmosphere)"
+    {
+        type            turbulentMixingLengthDissipationRateInlet;
+        mixingLength    0.1;
+        value           uniform $epsilonInlet;
+    }*/
+
+    #includeEtc "caseDicts/setConstraintTypes"
+}
+
+// ************************************************************************* //

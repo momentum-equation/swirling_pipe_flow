@@ -1,0 +1,96 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  3.0.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      k;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+kInlet          0.01;
+
+dimensions      [0 2 -2 0 0 0 0];
+
+internalField   uniform $kInlet;
+
+boundaryField
+{
+    cavityRight
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+    DIAPHRAGM
+    {
+        type            turbulentIntensityKineticEnergyInlet;
+        intensity       0.02;
+        value           uniform $kInlet;
+        
+       /* type            fixedValue;
+        value           uniform (0 1 0);*/
+    }
+    cavityTop
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+    orificeRight
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+    domainBottom
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+    domainRight
+    {
+        type            inletOutlet;
+        inletValue      uniform $kInlet;
+        value           uniform $kInlet;
+    }
+    domainTop
+    {
+        type            inletOutlet;
+        inletValue      uniform $kInlet;
+        value           uniform $kInlet;
+    }
+    /*axis
+    {
+        type            empty;
+    }*/
+    back
+    {
+        type            wedge;
+    }
+    front
+    {
+        type            wedge;
+    }
+
+    /*inlet
+    {
+        type            turbulentIntensityKineticEnergyInlet;
+        intensity       0.02;
+        value           uniform $kInlet;
+    }
+
+    atmosphere
+    {
+        type            inletOutlet;
+        inletValue      uniform $kInlet;
+        value           uniform $kInlet;
+    }*/
+
+    #includeEtc "caseDicts/setConstraintTypes"
+}
+
+// ************************************************************************* //
